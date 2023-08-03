@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Aggregation.Application</AssemblyName>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
@@ -17,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Dockerfile" />
+    <Content Include="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

@@ -1,0 +1,68 @@
+name: aggregation
+concurrency: aggregation-${{ github.ref }}
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aggregation
+
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/642254565385/locations/global/workloadIdentityPools/github/providers/github
+          service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
+        if: github.ref == 'refs/heads/main'
+
+      - name: Set up GCP SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '>= 363.0.0'
+        if: github.ref == 'refs/heads/main'
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.313'
+
+      - run: dotnet tool restore
+
+      - run: dotnet restore
+        name: Restore
+        working-directory:  ./aggregation
+
+      - run: dotnet build Aggregation.sln --no-restore
+        name: Build
+        working-directory: ./aggregation
+
+      - run: dotnet test --no-build
+        name: Test
+        working-directory: ./aggregation
+
+      - name: Build Release version
+        run: dotnet build -c Release Aggregation.sln
+        if: github.ref == 'refs/heads/main'
+
+      - name: Publish
+        run: >-
+          dotnet publish src/Application/Application.fsproj
+          --no-build
+          -c Release
+          -o artifacts/aggregation-application
+        if: github.ref == 'refs/heads/main'
+
+      - name: Build Docker Container
+        run: >-
+          gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/aggregation-application:$GITHUB_SHA 
+          --project ddd-vienna-sample
+        working-directory: aggregation/artifacts/aggregation-application
+        if: github.ref == 'refs/heads/main'
