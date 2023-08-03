@@ -8,8 +8,25 @@ trucks of their business partners, are located.
 
 ## Bounded Contexts
 
-The signals domain consists of the following bounded contexts:
+The signals domain consists of the following bounded contexts (BCs):
 
 - [`aggregation`](./aggregation)
 - [`forwarding`](./forwarding)
 
+The deployment and management of infrastructure works the same
+for each BC.
+
+### Terraform
+
+Infrastructure is managed via Terraform. Infrastructure changes
+are automatically applied during deployments.
+
+To connect to the terraform state from a development machine,
+do the following in the BC's `terraform` folder:
+
+```bash
+gcloud auth application-default login
+terraform init -backend-config=backend-config.hcl
+terraform plan -out plan.tfplan
+terraform apply plan.tfplan
+```
