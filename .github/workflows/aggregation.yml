@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      # TODO: this belongs to "mid", remove from "early"
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v1
         with:
@@ -26,6 +27,7 @@ jobs:
           service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
         if: github.ref == 'refs/heads/main'
 
+      # TODO: this belongs to "mid", remove from "early"
       - name: Set up GCP SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -50,10 +52,12 @@ jobs:
         name: Test
         working-directory: ./aggregation
 
+      # TODO: this belongs to "mid", remove from "early"
       - name: Build Release version
         run: dotnet build -c Release Aggregation.sln
         if: github.ref == 'refs/heads/main'
 
+      # TODO: this belongs to "mid", remove from "early"
       - name: Publish
         run: >-
           dotnet publish src/Application/Application.fsproj
@@ -61,7 +65,7 @@ jobs:
           -c Release
           -o artifacts/aggregation-application
         if: github.ref == 'refs/heads/main'
-
+      # TODO: this belongs to "mid", remove from "early"
       - name: Build Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/aggregation-application:$GITHUB_SHA 

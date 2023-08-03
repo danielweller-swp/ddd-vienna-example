@@ -1,6 +1,6 @@
 # Signals
 
-The *signals* domain deals with GPS signals related to trucks.
+The **signals** domain deals with GPS signals related to trucks.
 Its purpose is to _aggregate_ signals from GPS devices representing
 the location of trucks doing transports, and to _forward_ these
 signals to customers who want to know where their trucks, or the 
@@ -17,6 +17,8 @@ The deployment and management of infrastructure works the same
 for each BC.
 
 ### Terraform
+
+**TODO: this belongs to "mid", remove from "early"**
 
 Infrastructure is managed via Terraform. Infrastructure changes
 are automatically applied during deployments.
