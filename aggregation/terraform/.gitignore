@@ -1,0 +1,3 @@
+plan.tfplan
+.terraform
+.terraform.lock.hcl
