@@ -12,7 +12,9 @@ jobs:
     defaults:
       run:
         working-directory: aggregation
-
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - uses: actions/checkout@v1
