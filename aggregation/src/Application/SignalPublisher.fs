@@ -13,7 +13,6 @@ let publishSignal (signal: Signal) =
         signal
         |> serialize
         |> publisher.PublishAsync
-    System.Console.Out.WriteLine("Done publishing.")
-    
-    
+
     task.Wait()
+    System.Console.Out.WriteLine("Done publishing.")
