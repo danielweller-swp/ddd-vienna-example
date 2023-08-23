@@ -3,6 +3,7 @@ module Aggregation.Application.Program
 open System
 open System.IO
 open Aggregation.Application.Domain.AggregateFromProviders
+open Application
 open Application.Bus
 open Application.Bus.InMemory
 open Application.Bus.PubSub
@@ -20,14 +21,6 @@ open NodaTime
 
 [<Literal>]
 let GCP_PROJECT = "ddd-vienna-sample"
-
-let webApp =
-    choose [
-        GET >=>
-            choose [
-                route "/" >=> text "Aggregation BC"
-            ]
-        setStatusCode 404 >=> text "Not Found" ]
 
 // ---------------------------------
 // Error handler
@@ -63,7 +56,7 @@ let configureApp (app : IApplicationBuilder) =
             .UseHttpsRedirection())
         .UseCors(configureCors)
         .UseStaticFiles()
-        .UseGiraffe(webApp)
+        .UseGiraffe(Routes.routes)
 
 let createBus (services: IServiceProvider) : IBus =
     match isDevelopment services with
@@ -83,7 +76,6 @@ let configureServices (services : IServiceCollection) =
     services.AddSingleton<IClock>(NodaTime.SystemClock.Instance) |> ignore
     services.AddSingleton<IBus>(createBus) |> ignore
     services.AddSingleton<IProvider list>(configureProviders) |> ignore
-    services.AddHostedService<AggregateFromProvidersService>() |> ignore
 
 let configureLogging (builder : ILoggingBuilder) =
     builder.AddConsole()

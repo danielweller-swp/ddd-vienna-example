@@ -26,6 +26,7 @@
     <Compile Include="Domain\AggregateFromProviders.fs" />
     <Compile Include="Domain\Providers\ProviderA.fs" />
     <Compile Include="Domain\Providers\ProviderB.fs" />
+    <Compile Include="Routes.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

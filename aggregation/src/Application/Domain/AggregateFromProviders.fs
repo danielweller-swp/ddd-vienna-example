@@ -1,15 +1,16 @@
 module Aggregation.Application.Domain.AggregateFromProviders
 
 open System
-open System.Threading
 open System.Threading.Tasks
 open Application.Bus
 
 open Application.Domain
 open Application.Domain.Providers
-open Microsoft.Extensions.Hosting
+open Microsoft.AspNetCore.Http
 open Aggregation.Contracts.Signals.V1
 open NodaTime
+
+open Giraffe
 
 let SIGNAL_TOPIC = "aggregation-signals" |> TopicIdentifier
 
@@ -56,23 +57,10 @@ let aggregateAndPublishSignals clock bus (providers: IProvider list) = task {
         )        
 }
 
-
-type AggregateFromProvidersService(clock: IClock, bus: IBus, providers: IProvider list) =
-    let mutable timer = None
-    
-    interface IHostedService with
-        member _.StartAsync token =        
-            let callback = TimerCallback (fun _ ->
-                let task = aggregateAndPublishSignals clock bus providers
-                task.Wait()
-                )
-            timer <- new Timer(callback, null, 1000, 10000) |> Some
-            
-            Task.CompletedTask
-
-        member _.StopAsync token =
-            match timer with
-            | None -> ()
-            | Some x -> x.Dispose()
-            
-            Task.CompletedTask
+let handler = fun (next: HttpFunc) (ctx: HttpContext) -> task {
+    let clock = ctx.GetService<IClock>()
+    let bus = ctx.GetService<IBus>()
+    let providers = ctx.GetService<IProvider list>()
+    do! aggregateAndPublishSignals clock bus providers
+    return! json {|  |} next ctx
+}
