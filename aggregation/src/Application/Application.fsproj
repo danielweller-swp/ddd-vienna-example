@@ -20,8 +20,12 @@
     <Content Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Bus.fs" />    
-    <Compile Include="AggregationScheduler.fs" />
+    <Compile Include="Bus.fs" />
+    <Compile Include="Domain\Providers\Providers.fs" />
+    <Compile Include="Domain\SignalValidation.fs" />
+    <Compile Include="Domain\AggregationScheduler.fs" />
+    <Compile Include="Domain\Providers\ProviderA.fs" />
+    <Compile Include="Domain\Providers\ProviderB.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

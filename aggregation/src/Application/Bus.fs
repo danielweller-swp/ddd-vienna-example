@@ -6,7 +6,7 @@ type TopicIdentifier =
     | TopicIdentifier of string
 
 type IBus =
-    abstract Publish: TopicIdentifier -> string -> TaskResult<unit, exn>
+    abstract Publish: TopicIdentifier -> string-> TaskResult<unit, exn>
 
 module PubSub =
     open Google.Cloud.PubSub.V1

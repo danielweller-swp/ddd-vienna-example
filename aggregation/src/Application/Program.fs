@@ -2,10 +2,13 @@ module Aggregation.Application.Program
 
 open System
 open System.IO
-open Aggregation.Application.AggregationScheduler
+open Aggregation.Application.Domain.AggregationScheduler
 open Application.Bus
 open Application.Bus.InMemory
 open Application.Bus.PubSub
+open Application.Domain.Providers
+open Application.Domain.Providers.ProviderA
+open Application.Domain.Providers.ProviderB
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -13,6 +16,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open NodaTime
 
 [<Literal>]
 let GCP_PROJECT = "ddd-vienna-sample"
@@ -66,12 +70,20 @@ let createBus (services: IServiceProvider) : IBus =
     | true -> InMemoryBus()
     | false -> PubSubBus(GCP_PROJECT)
 
+let configureProviders(services: IServiceProvider) : IProvider list =
+    let clock = services.GetService<IClock>()
+    [
+        ProviderA(clock)
+        ProviderB(clock)
+    ]
+
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
-    services.AddSingleton<NodaTime.IClock>(NodaTime.SystemClock.Instance) |> ignore
+    services.AddSingleton<IClock>(NodaTime.SystemClock.Instance) |> ignore
     services.AddSingleton<IBus>(createBus) |> ignore
-    services.AddHostedService<AggregationSchedulerService>() |> ignore
+    services.AddSingleton<IProvider list>(configureProviders) |> ignore
+    services.AddHostedService<AggregateFromProvidersService>() |> ignore
 
 let configureLogging (builder : ILoggingBuilder) =
     builder.AddConsole()
