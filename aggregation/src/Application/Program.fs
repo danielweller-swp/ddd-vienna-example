@@ -3,6 +3,9 @@ module Aggregation.Application.Program
 open System
 open System.IO
 open Aggregation.Application.AggregationScheduler
+open Application.Bus
+open Application.Bus.InMemory
+open Application.Bus.PubSub
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -10,6 +13,9 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+
+[<Literal>]
+let GCP_PROJECT = "ddd-vienna-sample"
 
 let webApp =
     choose [
@@ -40,9 +46,12 @@ let configureCors (builder : CorsPolicyBuilder) =
        .AllowAnyHeader()
        |> ignore
 
+let isDevelopment (services: IServiceProvider) =
+    let env = services.GetService<IWebHostEnvironment>()
+    env.IsDevelopment()
+
 let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IWebHostEnvironment>()
-    (match env.IsDevelopment() with
+    (match isDevelopment app.ApplicationServices with
     | true  ->
         app.UseDeveloperExceptionPage()
     | false ->
@@ -52,10 +61,16 @@ let configureApp (app : IApplicationBuilder) =
         .UseStaticFiles()
         .UseGiraffe(webApp)
 
+let createBus (services: IServiceProvider) : IBus =
+    match isDevelopment services with
+    | true -> InMemoryBus()
+    | false -> PubSubBus(GCP_PROJECT)
+
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
     services.AddSingleton<NodaTime.IClock>(NodaTime.SystemClock.Instance) |> ignore
+    services.AddSingleton<IBus>(createBus) |> ignore
     services.AddHostedService<AggregationSchedulerService>() |> ignore
 
 let configureLogging (builder : ILoggingBuilder) =
