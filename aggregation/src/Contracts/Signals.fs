@@ -4,6 +4,7 @@ module Signals =
     module V1 =
 
         open System.Text.Json
+        open System.Text.Json.Serialization
         open NodaTime
         open NodaTime.Serialization.SystemTextJson
 
@@ -20,7 +21,15 @@ module Signals =
         
         let setupJsonOptions() =
             let options = JsonSerializerOptions()
-            options.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb) |> ignore
+
+            options
+                .ConfigureForNodaTime(DateTimeZoneProviders.Tzdb) |> ignore
+
+            options |>
+            JsonFSharpOptions
+                .Default()
+                .AddToJsonSerializerOptions
+
             options
             
         let jsonOptions = setupJsonOptions()

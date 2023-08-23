@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FsToolkit.ErrorHandling" Version="4.9.0" />
+    <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.9.0" />
     <PackageReference Include="Giraffe" Version="5.0.0-rc-6" />
     <PackageReference Include="Giraffe.ViewEngine" Version="1.3.*" />
     <PackageReference Include="Google.Cloud.PubSub.V1" Version="3.6.0" />
@@ -18,8 +20,12 @@
     <Content Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="SignalPublisher.fs" />
-    <Compile Include="AggregationScheduler.fs" />
+    <Compile Include="Bus.fs" />
+    <Compile Include="Domain\Providers\Providers.fs" />
+    <Compile Include="Domain\SignalValidation.fs" />
+    <Compile Include="Domain\AggregateFromProviders.fs" />
+    <Compile Include="Domain\Providers\ProviderA.fs" />
+    <Compile Include="Domain\Providers\ProviderB.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
