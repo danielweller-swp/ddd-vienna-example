@@ -2,7 +2,7 @@ module Aggregation.Application.Program
 
 open System
 open System.IO
-open Aggregation.Application.Domain.AggregationScheduler
+open Aggregation.Application.Domain.AggregateFromProviders
 open Application.Bus
 open Application.Bus.InMemory
 open Application.Bus.PubSub

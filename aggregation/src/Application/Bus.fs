@@ -40,6 +40,11 @@ module InMemory =
     type InMemoryBus() =
         let messages : ConcurrentDictionary<string, string list> = ConcurrentDictionary()
 
+        member this.MessagesOn topic =
+            match messages.TryGetValue(topic) with
+            | true, messages -> messages
+            | false, _ -> []
+
         interface IBus with
             member this.Publish (TopicIdentifier topicId) message = taskResult {
                 System.Console.Out.WriteLine($"Publishing {message} in-memory")

@@ -1,4 +1,4 @@
-module Aggregation.Application.Domain.AggregationScheduler
+module Aggregation.Application.Domain.AggregateFromProviders
 
 open System
 open System.Threading
