@@ -2,7 +2,7 @@
 resource "google_cloud_run_v2_service" "aggregation-application" {
   name     = "aggregation-application-tf"
   location = local.location
-  ingress = "INGRESS_TRAFFIC_ALL"
+  ingress  = "INGRESS_TRAFFIC_ALL"
 
   template {
     containers {
@@ -17,9 +17,9 @@ data "google_compute_default_service_account" "default" {
 
 
 resource "google_cloud_scheduler_job" "job" {
-  name             = "aggregation-schedule-tf"
-  description      = "Aggregation Scheduler"
-  schedule         = "*/10 * * * *"
+  name        = "aggregation-schedule-tf"
+  description = "Aggregation Scheduler"
+  schedule    = "*/10 * * * *"
 
   retry_config {
     retry_count = 1
@@ -29,10 +29,10 @@ resource "google_cloud_scheduler_job" "job" {
     http_method = "POST"
     uri         = "${google_cloud_run_v2_service.aggregation-application.uri}/aggregate-from-providers"
     oidc_token {
-        // in early/mid we use hard coded values
-        # service_account_email = "642254565385-compute@developer.gserviceaccount.com"
-        service_account_email = data.google_compute_default_service_account.default.email
-        audience = google_cloud_run_v2_service.aggregation-application.uri
+      // in early/mid we use hard coded values
+      # service_account_email = "642254565385-compute@developer.gserviceaccount.com"
+      service_account_email = data.google_compute_default_service_account.default.email
+      audience              = google_cloud_run_v2_service.aggregation-application.uri
     }
   }
 }

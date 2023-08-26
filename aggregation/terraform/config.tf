@@ -1,6 +1,6 @@
 locals {
   GCP_PROJECT = "ddd-vienna-sample"
-  location = "europe-west1"
+  location    = "europe-west1"
 }
 
 terraform {
