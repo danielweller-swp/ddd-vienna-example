@@ -8,7 +8,13 @@ resource "google_cloud_run_v2_service" "aggregation-application" {
     containers {
       image = "eu.gcr.io/${local.GCP_PROJECT}/aggregation_application:${var.AGGREGATION_VERSION}"
     }
+
+    labels = {
+      bounded-context = "aggregation"
+      component       = "core"
+    }
   }
+
 }
 
 // in early/mid we use hard coded values
