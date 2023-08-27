@@ -1,6 +1,6 @@
 // move to mid
 resource "google_cloud_run_v2_service" "aggregation-application" {
-  name     = "aggregation-application-tf"
+  name     = "aggregation-application"
   location = local.location
   ingress  = "INGRESS_TRAFFIC_ALL"
 
@@ -16,8 +16,8 @@ data "google_compute_default_service_account" "default" {
 }
 
 
-resource "google_cloud_scheduler_job" "job" {
-  name        = "aggregation-schedule-tf"
+resource "google_cloud_scheduler_job" "aggregation-scheduler" {
+  name        = "aggregation-schedule"
   description = "Aggregation Scheduler"
   schedule    = "*/10 * * * *"
 
