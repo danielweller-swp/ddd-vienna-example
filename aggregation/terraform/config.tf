@@ -1,12 +1,13 @@
 locals {
   GCP_PROJECT = "ddd-vienna-sample"
+  location    = "europe-west1"
 }
 
 terraform {
-  required_version = "~> 1.3.0"
+  required_version = "~> 1.5.0"
 
   required_providers {
-    google = "~> 4.19.0"
+    google = "~> 4.79.0"
   }
 
   backend "gcs" {
