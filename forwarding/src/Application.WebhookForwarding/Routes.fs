@@ -6,7 +6,7 @@ open FsToolkit.ErrorHandling
 
 let signalHandler =
     let handler = fun signal -> taskResult {
-        System.Console.Out.WriteLine("Forwarding signal via Webhook")
+        System.Console.Out.WriteLine($"Forwarding signal via Webhook: {signal}")
     } 
     Common.SignalSubscription.httpHandler handler
 
