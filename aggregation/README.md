@@ -55,7 +55,7 @@ Set the version:
 export AGGREGATION_VERSION=`git rev-parse HEAD`
 ```
 
-Build the docker image on GCP and deploy as Cloud Run:
+Build the docker image on GCP:
 ```bash
 gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/aggregation_application:$AGGREGATION_VERSION --project $GCP_PROJECT
 ```
@@ -78,6 +78,6 @@ gcloud scheduler jobs create http aggregation-schedule \
   --schedule="*/10 * * * *" \
   --uri="$AGGREGATION_APPLICATION_BASE_URL/aggregate-from-providers" \
   --http-method POST \
-  --oidc-service-account-email=642254565385-compute@developer.gserviceaccount.com \
+  --oidc-service-account-email=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
   --oidc-token-audience="$AGGREGATION_APPLICATION_BASE_URL"
 ```

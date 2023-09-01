@@ -1,5 +1,41 @@
-﻿namespace Common
+﻿module Common.SignalSubscription
 
-module Say =
-    let hello name =
-        printfn "Hello %s" name
+open System.Text.Json
+open FsToolkit.ErrorHandling
+open Giraffe
+open Microsoft.AspNetCore.Http
+
+type PubSubMessage = {
+    Data: string
+}
+
+type PubSubEvent = {
+    Message: PubSubMessage
+}
+
+let buildJsonOptions () =
+    let options = JsonSerializerOptions()
+    options.PropertyNameCaseInsensitive <- true
+    options
+    
+let jsonOptions = buildJsonOptions()
+
+let deserializePubSubEvent (str: string) = JsonSerializer.Deserialize<PubSubEvent>(str, jsonOptions)
+
+let httpHandler (handler: Aggregation.Contracts.Signals.V1.Signal -> TaskResult<unit, exn>) =
+    fun next (ctx: HttpContext) -> task {
+        let! body = ctx.ReadBodyFromRequestAsync()
+        let event = body |> deserializePubSubEvent
+
+        let signal =
+            event.Message.Data
+            |> System.Convert.FromBase64String
+            |> System.Text.Encoding.UTF8.GetString
+            |> Aggregation.Contracts.Signals.V1.deserialize
+
+        let! result = signal |> handler
+
+        match result with
+        | Ok _ -> return! json {|  |} next ctx
+        | Error e -> return! ServerErrors.INTERNAL_ERROR e.Message next ctx
+    }

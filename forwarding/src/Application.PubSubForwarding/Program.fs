@@ -10,14 +10,6 @@ open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
-let webApp =
-    choose [
-        GET >=>
-            choose [
-                route "/" >=> text "Forwarding.Application.PubSubForwarding"
-            ]
-        setStatusCode 404 >=> text "Not Found" ]
-
 // ---------------------------------
 // Error handler
 // ---------------------------------
@@ -49,7 +41,7 @@ let configureApp (app : IApplicationBuilder) =
             .UseHttpsRedirection())
         .UseCors(configureCors)
         .UseStaticFiles()
-        .UseGiraffe(webApp)
+        .UseGiraffe(Routes.routes)
 
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
