@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Routes.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

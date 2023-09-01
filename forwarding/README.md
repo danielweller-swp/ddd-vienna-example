@@ -21,7 +21,6 @@ dotnet build
 ### Test
 
 ```bash
-# TODO: tests
 dotnet test
 ```
 
@@ -62,13 +61,14 @@ https://localhost:5001/
 
 Build the release version:
 ```bash
-dotnet build Aggregation.sln -c Release
+dotnet build Forwarding.sln -c Release
 ```
 
-Publish it and change directory:
+Publish the deployables and change directory:
 ```bash
-dotnet publish src/Application/Application.fsproj --no-build -c Release -o artifacts/aggregation-application
-cd artifacts/aggregation-application
+dotnet publish src/Application.PubSubForwarding/Application.PubSubForwarding.fsproj --no-build -c Release -o artifacts/forwarding-pubsub
+dotnet publish src/Application.WebhookForwarding/Application.WebhookForwarding.fsproj --no-build -c Release -o artifacts/forwarding-webhook
+cd artifacts
 ``
 
 Set the GCP project to deploy to:
@@ -78,19 +78,41 @@ export GCP_PROJECT=ddd-vienna-sample
 
 Set the version:
 ```bash
-export AGGREGATION_VERSION=`git rev-parse HEAD`
+export FORWARDING_VERSION=`git rev-parse HEAD`
 ```
 
-Build the docker image on GCP and deploy as Cloud Run:
+Build the docker images on GCP:
 ```bash
-gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/aggregation_application:$AGGREGATION_VERSION --project $GCP_PROJECT
+cd forwarding-pubsub
+gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/forwarding_pubsub:$FORWARDING_VERSION --project $GCP_PROJECT
+
+cd ../forwarding-webhook
+gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/forwarding_webhook:$FORWARDING_VERSION --project $GCP_PROJECT
 ```
 
 Deploy as Cloud Run:
 ```bash
-gcloud run deploy aggregation-application --image eu.gcr.io/$GCP_PROJECT/aggregation_application:$AGGREGATION_VERSION --region europe-west1
+gcloud run deploy forwarding-pubsub --image eu.gcr.io/$GCP_PROJECT/forwarding_pubsub:$FORWARDING_VERSION --region europe-west1
+gcloud run deploy forwarding-webhook --image eu.gcr.io/$GCP_PROJECT/forwarding_webhook:$FORWARDING_VERSION --region europe-west1
 ```
 
 ### One-Time Setup
 
-# TODO: create a push subscription
+Find the *service URLs* of the Cloud Run deployables: they are output
+by the `gcloud run deploy` commands, and can also be found via the
+[GCP console](https://console.cloud.google.com/run?referrer=search&project=ddd-vienna-sample).
+
+For each service URL, create a Pub/Sub subscription:
+```bash
+export GCP_PROJECT_NUMBER=642254565385
+
+gcloud pubsub subscriptions create forwarding-pubsub-signals \
+    --topic=aggregation-signals \
+    --push-auth-service-account=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
+    --push-endpoint=<FORWARDING_PUBSUB_SERVICE_URL>
+
+gcloud pubsub subscriptions create forwarding-webhook-signals \
+    --topic=aggregation-signals \
+    --push-auth-service-account=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
+    --push-endpoint=<FORWARDING_WEBHOOK_SERVICE_URL>    
+```
