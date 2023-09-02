@@ -7,20 +7,23 @@ resource "google_cloud_run_v2_service" "aggregation-application" {
   template {
     containers {
       image = "eu.gcr.io/${local.GCP_PROJECT}/aggregation-application:${var.AGGREGATION_VERSION}"
+      env {
+        name = "aggregation_signals"
+        value = google_pubsub_topic.aggregation-signals.id
+      }
     }
-
+    
+    scaling {
+      // it's usefull to limit processing and spot issues via subscriptions, 
+      // instead of a high instance count
+      max_instance_count = 5
+    }
     labels = {
       bounded-context = "aggregation"
       component       = "core"
     }
   }
-
 }
-
-// in early/mid we use hard coded values
-data "google_compute_default_service_account" "default" {
-}
-
 
 resource "google_cloud_scheduler_job" "aggregation-scheduler" {
   name        = "aggregation-schedule"
@@ -40,5 +43,13 @@ resource "google_cloud_scheduler_job" "aggregation-scheduler" {
       service_account_email = data.google_compute_default_service_account.default.email
       audience              = google_cloud_run_v2_service.aggregation-application.uri
     }
+  }
+}
+
+resource "google_pubsub_topic" "aggregation-signals" {
+  name = "aggregation-signals"
+  labels = {
+    bounded-context = "aggregation"
+    component       = "core"
   }
 }
