@@ -6,7 +6,7 @@ resource "google_cloud_run_v2_service" "aggregation-application" {
 
   template {
     containers {
-      image = "eu.gcr.io/${local.GCP_PROJECT}/aggregation_application:${var.AGGREGATION_VERSION}"
+      image = "eu.gcr.io/${local.GCP_PROJECT}/aggregation-application:${var.AGGREGATION_VERSION}"
     }
 
     labels = {
