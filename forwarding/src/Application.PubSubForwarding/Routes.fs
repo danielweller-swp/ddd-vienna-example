@@ -5,7 +5,7 @@ open Microsoft.AspNetCore.Http
 open FsToolkit.ErrorHandling
 
 let signalHandler =
-    let handler = fun signal -> taskResult {
+    let handler = fun ctx signal -> taskResult {
         System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
     } 
     Common.SignalSubscription.httpHandler handler

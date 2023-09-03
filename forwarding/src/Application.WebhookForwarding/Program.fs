@@ -9,6 +9,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open Application.WebhookForwarding.Options
 
 // ---------------------------------
 // Error handler
@@ -46,6 +47,8 @@ let configureApp (app : IApplicationBuilder) =
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
+    services |> configureOptions |> ignore
+    
 
 let configureLogging (builder : ILoggingBuilder) =
     builder.AddConsole()
