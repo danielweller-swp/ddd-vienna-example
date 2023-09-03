@@ -13,7 +13,7 @@ resource "google_cloud_run_v2_service" "webhook-application" {
     containers {
       image = "eu.gcr.io/${local.GCP_PROJECT}/webhook-application:${var.AGGREGATION_VERSION}"
       env {
-        name = "CUSTOMER_1_WEBHOOK_KEY"
+        name  = "CUSTOMER_1_WEBHOOK_KEY"
         value = var.CUSTOMER_1_WEBHOOK_KEY
       }
     }
