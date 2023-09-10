@@ -17,6 +17,7 @@ function invalidSignalNotificationHandler(req, res) {
   } else {
     notifyCustomer(signal)
   }
+  res.sendStatus(200)
 }
 
 const app = express()
