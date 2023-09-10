@@ -31,22 +31,22 @@ module PubSub =
 module InMemory =
     open System.Collections.Concurrent
     
-    let addToMap topic (map: ConcurrentDictionary<string, string list>) message =
+    let addToMap topic (map: ConcurrentDictionary<TopicIdentifier, string list>) message =
         let add = fun _ -> []
         let update = fun _ messages -> message :: messages
         map.AddOrUpdate(topic, add, update) |> ignore
         
     
     type InMemoryBus() =
-        let messages : ConcurrentDictionary<string, string list> = ConcurrentDictionary()
+        let messages : ConcurrentDictionary<TopicIdentifier, string list> = ConcurrentDictionary()
 
-        member this.MessagesOn topic =
-            match messages.TryGetValue(topic) with
+        member this.MessagesOn topicId =
+            match messages.TryGetValue(topicId) with
             | true, messages -> messages
             | false, _ -> []
 
         interface IBus with
-            member this.Publish (TopicIdentifier topicId) message = taskResult {
+            member this.Publish topicId message = taskResult {
                 System.Console.Out.WriteLine($"Publishing {message} in-memory")
 
                 message

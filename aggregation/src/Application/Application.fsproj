@@ -21,6 +21,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Bus.fs" />
+    <Compile Include="Options.fs" />
     <Compile Include="Domain\Providers\Providers.fs" />
     <Compile Include="Domain\SignalValidation.fs" />
     <Compile Include="Domain\AggregateFromProviders.fs" />
