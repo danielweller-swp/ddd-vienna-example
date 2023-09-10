@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "aggregation",
+      "Group": "Servers",
+      "Port": 5432,
+      "Username": "postgres",
+      "Host": "aggregation-postgres",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
+  }
+}
