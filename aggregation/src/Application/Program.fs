@@ -2,7 +2,6 @@ module Aggregation.Application.Program
 
 open System
 open System.IO
-open Aggregation.Application.Domain.AggregateFromProviders
 open Application
 open Application.Bus
 open Application.Bus.InMemory
@@ -10,6 +9,7 @@ open Application.Bus.PubSub
 open Application.Domain.Providers
 open Application.Domain.Providers.ProviderA
 open Application.Domain.Providers.ProviderB
+open Application.Options
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
@@ -73,6 +73,8 @@ let configureProviders(services: IServiceProvider) : IProvider list =
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
+    // TODO: this belongs to mid
+    services |> configureOptions |> ignore
     services.AddSingleton<IClock>(NodaTime.SystemClock.Instance) |> ignore
     services.AddSingleton<IBus>(createBus) |> ignore
     services.AddSingleton<IProvider list>(configureProviders) |> ignore

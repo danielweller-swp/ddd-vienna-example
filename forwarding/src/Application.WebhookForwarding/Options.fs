@@ -1,7 +1,6 @@
 module Application.WebhookForwarding.Options
 
 open System
-open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 
 type Webhook = {

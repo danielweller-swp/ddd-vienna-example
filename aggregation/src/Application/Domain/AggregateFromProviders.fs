@@ -6,21 +6,23 @@ open Application.Bus
 
 open Application.Domain
 open Application.Domain.Providers
+open Application.Options
 open Microsoft.AspNetCore.Http
 open Aggregation.Contracts.Signals.V1
 open NodaTime
 
 open Giraffe
 
-let SIGNAL_TOPIC = "aggregation-signals" |> TopicIdentifier
+// TODO: this belongs to early
+//let SIGNAL_TOPIC = "aggregation-signals" |> TopicIdentifier
 
-let publishSignal (bus: IBus) clock signal =
+let publishSignal (bus: IBus) topic signal =
     signal
     |> serialize
-    |> bus.Publish SIGNAL_TOPIC
+    |> bus.Publish topic
     
     
-let aggregateAndPublishSignals clock bus (providers: IProvider list) = task {
+let aggregateAndPublishSignals bus topic (providers: IProvider list) = task {
     let! signalResults =
         providers
         |> List.map(fun provider ->
@@ -44,7 +46,7 @@ let aggregateAndPublishSignals clock bus (providers: IProvider list) = task {
         |> Array.map(fun signal ->
             signal
             |> SignalValidation.validate
-            |> publishSignal bus clock
+            |> publishSignal bus topic
             )
         |> Task.WhenAll
         
@@ -58,9 +60,12 @@ let aggregateAndPublishSignals clock bus (providers: IProvider list) = task {
 }
 
 let handler = fun (next: HttpFunc) (ctx: HttpContext) -> task {
-    let clock = ctx.GetService<IClock>()
     let bus = ctx.GetService<IBus>()
     let providers = ctx.GetService<IProvider list>()
-    do! aggregateAndPublishSignals clock bus providers
+    // TODO: this belongs to mid
+    let config = ctx.GetService<ApplicationConfiguration>()
+    // TODO: this belongs to early
+    // do! aggregateAndPublishSignals clock bus SIGNAL_TOPIC providers
+    do! aggregateAndPublishSignals bus config.SignalsTopicIdentifier providers
     return! json {|  |} next ctx
 }

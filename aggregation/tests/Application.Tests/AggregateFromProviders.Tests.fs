@@ -5,6 +5,7 @@ open NodaTime.Testing
 
 module Fixtures =
 
+    open Application.Bus
     open Application.Bus.InMemory
     open Application.Domain.Providers
     open Application.Domain.Providers.ProviderA
@@ -18,10 +19,12 @@ module Fixtures =
     ]
     let bus = InMemoryBus()
     
+    let signalsTopic = "aggregation-signals" |> TopicIdentifier
+    
 module When =
     open Aggregation.Application.Domain.AggregateFromProviders
     let aggregatingAndPublishingSignals () =
-        aggregateAndPublishSignals Fixtures.clock Fixtures.bus Fixtures.providers
+        aggregateAndPublishSignals Fixtures.bus Fixtures.signalsTopic Fixtures.providers
 
 module Then =
     let aMessageShouldBePublishedOn topic =
@@ -31,10 +34,10 @@ module Then =
     
 module AggregateFromProviders =
 
-    let SIGNAL_TOPIC = "aggregation-signals"    
+    
 
     [<Fact>]
     let ``should publish at least one signal`` () = task {
         do! When.aggregatingAndPublishingSignals()
-        Then.aMessageShouldBePublishedOn SIGNAL_TOPIC
+        Then.aMessageShouldBePublishedOn Fixtures.signalsTopic
     }
