@@ -50,17 +50,6 @@ http://localhost:8080/
 
 ### Deploying a new app version
 
-Build the release version:
-```bash
-dotnet build Aggregation.sln -c Release
-```
-
-Publish it and change directory:
-```bash
-dotnet publish src/Application/Application.fsproj --no-build -c Release -o artifacts/aggregation-application
-cd artifacts/aggregation-application
-``
-
 Set the GCP project to deploy to:
 ```bash
 export GCP_PROJECT=ddd-vienna-sample
@@ -68,32 +57,31 @@ export GCP_PROJECT=ddd-vienna-sample
 
 Set the version:
 ```bash
-export AGGREGATION_VERSION=`git rev-parse HEAD`
+export NOTIFICATIONS_VERSION=`git rev-parse HEAD`
 ```
 
 Build the docker image on GCP:
 ```bash
-gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/aggregation_application:$AGGREGATION_VERSION --project $GCP_PROJECT
+gcloud builds submit --tag eu.gcr.io/$GCP_PROJECT/notifications_application:$NOTIFICATIONS_VERSION --project $GCP_PROJECT
 ```
 
 Deploy as Cloud Run:
 ```bash
-gcloud run deploy aggregation-application --image eu.gcr.io/$GCP_PROJECT/aggregation_application:$AGGREGATION_VERSION --region europe-west1
+gcloud run deploy notifications-application --image eu.gcr.io/$GCP_PROJECT/notifications_application:$NOTIFICATIONS_VERSION --region europe-west1
 ```
 
 ### One-Time Setup
 
-Create a scheduler job that triggers the aggregation every 10 minutes:
+Find the *service URL* of the Cloud Run deployable: it is output
+by the `gcloud run deploy` command, and can also be found via the
+[GCP console](https://console.cloud.google.com/run?referrer=search&project=ddd-vienna-sample).
+
+Then, create a Pub/Sub subscription:
 ```bash
 export GCP_PROJECT_NUMBER=642254565385
-# This is the URL from last command from the previous section
-export AGGREGATION_APPLICATION_BASE_URL=https://aggregation-application-4yyc3hq26q-ew.a.run.app
 
-gcloud scheduler jobs create http aggregation-schedule \
-  --location europe-west1 \
-  --schedule="*/10 * * * *" \
-  --uri="$AGGREGATION_APPLICATION_BASE_URL/aggregate-from-providers" \
-  --http-method POST \
-  --oidc-service-account-email=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
-  --oidc-token-audience="$AGGREGATION_APPLICATION_BASE_URL"
+gcloud pubsub subscriptions create notifications-signals \
+    --topic=aggregation-signals \
+    --push-auth-service-account=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
+    --push-endpoint=<NOTIFICATIONS_SERVICE_URL>
 ```
