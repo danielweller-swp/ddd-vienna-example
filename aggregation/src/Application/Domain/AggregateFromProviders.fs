@@ -6,7 +6,6 @@ open Application.Bus
 
 open Application.Domain
 open Application.Domain.Providers
-open Application.Options
 open Microsoft.AspNetCore.Http
 open Aggregation.Contracts.Signals.V1
 open NodaTime

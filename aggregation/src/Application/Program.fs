@@ -9,7 +9,6 @@ open Application.Bus.PubSub
 open Application.Domain.Providers
 open Application.Domain.Providers.ProviderA
 open Application.Domain.Providers.ProviderB
-open Application.Options
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
