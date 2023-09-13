@@ -13,8 +13,7 @@ open NodaTime
 
 open Giraffe
 
-// TODO: this belongs to early
-//let SIGNAL_TOPIC = "aggregation-signals" |> TopicIdentifier
+let SIGNAL_TOPIC = "aggregation-signals" |> TopicIdentifier
 
 let publishSignal (bus: IBus) topic signal =
     signal
@@ -62,10 +61,7 @@ let aggregateAndPublishSignals bus topic (providers: IProvider list) = task {
 let handler = fun (next: HttpFunc) (ctx: HttpContext) -> task {
     let bus = ctx.GetService<IBus>()
     let providers = ctx.GetService<IProvider list>()
-    // TODO: this belongs to mid
-    let config = ctx.GetService<ApplicationConfiguration>()
-    // TODO: this belongs to early
-    // do! aggregateAndPublishSignals clock bus SIGNAL_TOPIC providers
-    do! aggregateAndPublishSignals bus config.SignalsTopicIdentifier providers
+    do! aggregateAndPublishSignals bus SIGNAL_TOPIC providers
+    
     return! json {|  |} next ctx
 }

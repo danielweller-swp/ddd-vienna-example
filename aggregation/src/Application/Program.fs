@@ -73,8 +73,6 @@ let configureProviders(services: IServiceProvider) : IProvider list =
 let configureServices (services : IServiceCollection) =
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
-    // TODO: this belongs to mid
-    services |> configureOptions |> ignore
     services.AddSingleton<IClock>(NodaTime.SystemClock.Instance) |> ignore
     services.AddSingleton<IBus>(createBus) |> ignore
     services.AddSingleton<IProvider list>(configureProviders) |> ignore
