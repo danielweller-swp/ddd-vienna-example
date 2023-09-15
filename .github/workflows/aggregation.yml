@@ -72,6 +72,7 @@ jobs:
           --project ddd-vienna-sample
         working-directory: aggregation/artifacts/aggregation-application
         if: github.ref == 'refs/heads/main'
+
   terraform:
     name: Terraform
     needs: build
@@ -113,4 +114,4 @@ jobs:
 
       - name: Apply
         run: terraform apply -input=false terraform.plan
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
