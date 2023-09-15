@@ -8,8 +8,7 @@ open Application.Domain
 open Application.Domain.Providers
 open Application.Options
 open Microsoft.AspNetCore.Http
-open Aggregation.Contracts.Signals.V1
-open NodaTime
+open Aggregation.Contracts.Signals.V2.Encoding
 
 open Giraffe
 
@@ -56,7 +55,7 @@ let aggregateAndPublishSignals bus topic (providers: IProvider list) = task {
         | Error e ->
             Console.Out.WriteLine($"Error publishing signal: {e.Message}")
         | _ -> ()
-        )        
+        )
 }
 
 let handler = fun (next: HttpFunc) (ctx: HttpContext) -> task {
