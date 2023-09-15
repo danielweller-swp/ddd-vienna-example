@@ -1,9 +1,5 @@
 // move to mid
 
-variable "CUSTOMER_1_WEBHOOK_KEY" {
-  type = string
-}
-
 resource "google_cloud_run_v2_service" "webhook-application" {
   name     = "forwarding-webhook"
   location = local.location
@@ -14,6 +10,12 @@ resource "google_cloud_run_v2_service" "webhook-application" {
       image = "eu.gcr.io/${local.GCP_PROJECT}/webhook-application:${var.AGGREGATION_VERSION}"
       env {
         name  = "CUSTOMER_1_WEBHOOK_KEY"
+        value_source {
+          secret_key_ref {
+            secret = google_secret_manager_secret.customer_1_webhook_key.secret_id
+            version = "latest"
+          }
+        }
         value = var.CUSTOMER_1_WEBHOOK_KEY
       }
     }
@@ -25,6 +27,9 @@ resource "google_cloud_run_v2_service" "webhook-application" {
   }
 }
 
+resource "google_secret_manager_secret" "customer_1_webhook_key" {
+  secret_id = "customer_1_webhook_key"
+}
 
 resource "google_pubsub_subscription" "webhook-subscription" {
   name  = "forwarding-webhook-signals"

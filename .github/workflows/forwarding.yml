@@ -125,7 +125,6 @@ jobs:
       - name: Setup Terraform variables
         run: |
           echo "TF_VAR_AGGREGATION_VERSION=$GITHUB_SHA" >> "$GITHUB_ENV"
-          echo "TF_VAR_CUSTOMER_1_WEBHOOK_KEY=${{ secrets.CUSTOMER_1_WEBHOOK_KEY }}" >> "$GITHUB_ENV"
 
       - name: Plan
         run: terraform plan -input=false -out=terraform.plan
