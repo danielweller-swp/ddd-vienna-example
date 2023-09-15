@@ -24,7 +24,7 @@ Some of our BCs use a private NuGet registry hosted by GitHub.
 To setup access to the registry, please make a copy of [`nuget.config.example`](nuget.config.example)
 named `nuget.config` and replace USERNAME by your GitHub username and
 TOKEN by a personal access token. See [the GitHub docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-with-a-personal-access-token)
-for information.
+for more information.
 
 ### Terraform
 
