@@ -30,7 +30,8 @@ dotnet test
 ### Run
 
 ```bash
-dotnet run
+export AGGREGATION_SIGNALS_TOPIC=aggregation-signals
+dotnet run --project src/Application
 ```
 
 ### Sending a command

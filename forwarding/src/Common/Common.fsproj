@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aggregation.Contracts" Version="1.0.1" />
+    <PackageReference Include="Aggregation.Contracts" Version="2.0.0" />
     <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.9.0" />
     <PackageReference Include="Giraffe" Version="6.2.0" />
   </ItemGroup>

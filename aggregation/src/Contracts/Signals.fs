@@ -1,12 +1,8 @@
 ﻿namespace Aggregation.Contracts
 
 module Signals =
-    module V1 =
-
-        open System.Text.Json
-        open System.Text.Json.Serialization
+    module V2 =
         open NodaTime
-        open NodaTime.Serialization.SystemTextJson
 
         type ValidationResult =
             | Valid
@@ -18,24 +14,47 @@ module Signals =
             Timestamp: Instant
             ValidationResult: ValidationResult
         }
+
+        module Encoding =
+            open Thoth.Json.Net
         
-        let setupJsonOptions() =
-            let options = JsonSerializerOptions()
-
-            options
-                .ConfigureForNodaTime(DateTimeZoneProviders.Tzdb) |> ignore
-
-            options |>
-            JsonFSharpOptions
-                .Default()
-                .AddToJsonSerializerOptions
-
-            options
+            [<Literal>]
+            let ValidEncoding = "valid"
             
-        let jsonOptions = setupJsonOptions()
+            [<Literal>]
+            let InvalidEncoding = "invalid"
             
-        let deserialize (signalJson: string) : Signal =
-            JsonSerializer.Deserialize<Signal>(signalJson, jsonOptions)
+            let validationResultEncoder (validationResult: ValidationResult) =
+                match validationResult with
+                | Valid ->
+                    [
+                        "status", Encode.string ValidEncoding
+                    ]
+                | Invalid error ->
+                    [
+                        "status", Encode.string InvalidEncoding
+                        "error", Encode.string error
+                    ]
+                |> Encode.object
             
-        let serialize (signal: Signal) : string =
-            JsonSerializer.Serialize<Signal>(signal, jsonOptions)
+            let validationResultDecoder : Decoder<ValidationResult> = 
+                Decode.object (fun get ->
+                    match get.Required.Field "status" Decode.string with
+                    | ValidEncoding ->
+                        Valid
+                    | InvalidEncoding ->
+                        let validationError = get.Required.Field "error" Decode.string
+                        Invalid validationError
+                    | x -> failwith $"Unknown validationResult {x}")
+
+            let extra =
+                Extra.empty
+                |> Extra.withDecimal
+                |> Extra.withCustom validationResultEncoder validationResultDecoder
+                |> Extra.withCustom Instant.instantEncoder Instant.instantDecoder
+
+            let deserialize (signalJson: string) : Result<Signal, string> =
+                Decode.Auto.fromString(signalJson, CaseStrategy.CamelCase, extra)
+                
+            let serialize (signal: Signal) : string =
+                Encode.Auto.toString(4, signal, CaseStrategy.CamelCase, extra)

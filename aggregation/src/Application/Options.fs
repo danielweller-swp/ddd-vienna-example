@@ -1,7 +1,5 @@
 module Application.Options
 
-// TODO: this belongs to mid
-
 open System
 open Application.Bus
 open Microsoft.Extensions.DependencyInjection
