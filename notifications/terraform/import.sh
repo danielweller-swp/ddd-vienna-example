@@ -1,0 +1,2 @@
+#terraform import google_cloud_run_v2_service.notifications-application europe-west1/notifications-application
+#terraform import google_pubsub_subscription.aggregation-signals-subscription notifications-signals

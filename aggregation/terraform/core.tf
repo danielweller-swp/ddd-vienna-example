@@ -1,4 +1,3 @@
-// move to mid
 resource "google_cloud_run_v2_service" "aggregation-application" {
   name     = "aggregation-application"
   location = local.location

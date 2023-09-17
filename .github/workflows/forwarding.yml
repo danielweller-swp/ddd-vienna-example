@@ -80,6 +80,7 @@ jobs:
           --project ddd-vienna-sample
         working-directory: forwarding/artifacts/pubsub-application
         if: github.ref == 'refs/heads/main'
+
       - name: Build Webhook Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/webhook-application:$GITHUB_SHA 

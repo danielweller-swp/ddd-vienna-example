@@ -1,0 +1,89 @@
+name: notifications
+concurrency: notifications-${{ github.ref }}
+
+on:
+  workflow_dispatch:
+#  push:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: notifications
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/642254565385/locations/global/workloadIdentityPools/github/providers/github
+          service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
+        if: github.ref == 'refs/heads/main'
+
+      - name: Set up GCP SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: ">= 363.0.0"
+        if: github.ref == 'refs/heads/main'
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.313"
+
+      - run: npm ci
+
+      - run: npm test
+
+      - name: Build Docker Container
+        run: >-
+          gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/notifications_application:$GITHUB_SHA 
+          --project ddd-vienna-sample
+        if: github.ref == 'refs/heads/main'
+
+  terraform:
+    name: Terraform
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: notifications/terraform
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - name: Format
+        run: terraform fmt -check
+        continue-on-error: false
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/642254565385/locations/global/workloadIdentityPools/github/providers/github
+          service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
+
+      - name: Init
+        run: terraform init -backend-config=backend-config.hcl
+
+      - name: Validate
+        run: terraform validate
+
+      - name: Setup Terraform variables
+        run: |
+          echo "TF_VAR_NOTIFICATIONS_VERSION=$GITHUB_SHA" >> "$GITHUB_ENV"
+
+      - name: Plan
+        run: terraform plan -input=false -out=terraform.plan
+
+      - name: Apply
+        run: terraform apply -input=false terraform.plan
+        if: github.ref == 'refs/heads/release'
