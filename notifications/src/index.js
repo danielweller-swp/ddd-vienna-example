@@ -1,5 +1,3 @@
-const { parseSignal } = require('./parseSignal')
-
 const express = require('express')
 
 function extractSignalMessage(postBody) {
@@ -11,8 +9,8 @@ function notifyCustomer(invalidSignal) {
 }
 
 function invalidSignalNotificationHandler(req, res) {
-  const signal = parseSignal(extractSignalMessage(req.body))
-  if (signal.isValid) {
+  const signal = extractSignalMessage(req.body)
+  if (signal.validationResult.status === 'valid') {
     console.log('Valid signal observed; doing nothing.')
   } else {
     notifyCustomer(signal)
