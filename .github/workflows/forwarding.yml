@@ -3,7 +3,10 @@ concurrency: forwarding-${{ github.ref }}
 
 on:
   workflow_dispatch:
-#  push:
+  push:
+    paths:
+      - "aggregation/src/Contracts"
+
 
 jobs:
   build:
@@ -86,6 +89,7 @@ jobs:
           --project ddd-vienna-sample
         working-directory: forwarding/artifacts/webhook-application
         if: github.ref == 'refs/heads/main'
+
   terraform:
     name: Terraform
     needs: build
@@ -128,4 +132,4 @@ jobs:
 
       - name: Apply
         run: terraform apply -input=false terraform.plan
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
