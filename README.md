@@ -12,6 +12,7 @@ The signals domain consists of the following bounded contexts (BCs):
 
 - [`aggregation`](./aggregation)
 - [`forwarding`](./forwarding)
+- [`notifications`](./notifications)
 
 The deployment and management of infrastructure works the same
 for each BC.
@@ -27,8 +28,6 @@ TOKEN by a personal access token. See [the GitHub docs](https://docs.github.com/
 for more information.
 
 ### Terraform
-
-**TODO: this belongs to "mid", remove from "early"**
 
 Infrastructure is managed via Terraform. Infrastructure changes
 are automatically applied during deployments.
