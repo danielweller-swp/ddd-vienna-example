@@ -1,4 +1,3 @@
-// move to mid
 resource "google_cloud_run_v2_service" "pubsub-application" {
   name     = "forwarding-pubsub"
   location = local.location
