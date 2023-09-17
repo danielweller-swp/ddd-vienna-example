@@ -4,7 +4,6 @@ variable "AGGREGATION_VERSION" {
 }
 
 
-// in early/mid we use hard coded values
 data "google_compute_default_service_account" "default" {
 }
 

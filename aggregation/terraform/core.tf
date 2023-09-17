@@ -37,8 +37,6 @@ resource "google_cloud_scheduler_job" "aggregation-scheduler" {
     http_method = "POST"
     uri         = "${google_cloud_run_v2_service.aggregation-application.uri}/aggregate-from-providers"
     oidc_token {
-      // in early/mid we use hard coded values
-      # service_account_email = "642254565385-compute@developer.gserviceaccount.com"
       service_account_email = data.google_compute_default_service_account.default.email
       audience              = google_cloud_run_v2_service.aggregation-application.uri
     }
