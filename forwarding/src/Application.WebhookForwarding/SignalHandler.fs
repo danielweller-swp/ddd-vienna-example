@@ -7,12 +7,10 @@ open Giraffe
 open Microsoft.AspNetCore.Http
 open FsToolkit.ErrorHandling
 
-// TODO: this is for late
 let handleSignalWithoutBatching webhook signal =
     System.Console.Out.WriteLine($"Forwarding signal via Webhook: {signal}")
     System.Console.Out.WriteLine($"Webhook: {webhook.Url}?key={webhook.Key}")
 
-// TODO: this is for late
 let handleSignalWithBatching batchingConfig webhook signal =
     System.Console.Out.WriteLine($"Batching signal {signal} until {batchingConfig.BatchSize} is reached")
     System.Console.Out.WriteLine($"Webhook: {webhook.Url}?key={webhook.Key}")
@@ -22,11 +20,6 @@ let signalHandler : (HttpFunc -> HttpContext -> Task<HttpContext option>) =
         let config = ctx.GetService<ApplicationConfiguration>()
         config.Webhooks
         |> List.iter(fun webhook ->
-            // TODO: this is for early
-            //System.Console.Out.WriteLine($"Forwarding signal via Webhook: {signal}")
-            //System.Console.Out.WriteLine($"Webhook: {webhook.Url}?key={webhook.Key}")
-
-            // TODO: this is for late
             match config.Features.Batching with
             | NoBatching -> signal |> handleSignalWithoutBatching webhook
             | Batching batchingConfig -> signal |> handleSignalWithBatching batchingConfig webhook
