@@ -3,7 +3,9 @@ concurrency: forwarding-${{ github.ref }}
 
 on:
   workflow_dispatch:
-#  push:
+  push:
+    paths:
+      - "aggregation/src/Contracts"
 
 jobs:
   build:
