@@ -17,6 +17,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Options.fs" />
+    <Compile Include="SignalHandler.fs" />    
     <Compile Include="Routes.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

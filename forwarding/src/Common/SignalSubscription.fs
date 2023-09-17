@@ -23,7 +23,7 @@ let jsonOptions = buildJsonOptions()
 let deserializePubSubEvent (str: string) = JsonSerializer.Deserialize<PubSubEvent>(str, jsonOptions)
 
 let httpHandler (handler: HttpContext -> Aggregation.Contracts.Signals.V1.Signal -> TaskResult<unit, exn>) =
-    fun next (ctx: HttpContext) -> task {
+    fun (next: HttpFunc) (ctx: HttpContext) -> task {
         let! body = ctx.ReadBodyFromRequestAsync()
         let event = body |> deserializePubSubEvent
 
