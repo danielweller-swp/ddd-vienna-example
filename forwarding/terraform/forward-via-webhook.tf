@@ -1,5 +1,3 @@
-// move to mid
-
 variable "CUSTOMER_1_WEBHOOK_KEY" {
   type = string
 }
