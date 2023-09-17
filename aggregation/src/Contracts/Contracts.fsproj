@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Aggregation.Contracts</AssemblyName>
+    <RepositoryUrl>https://github.com/danielweller-swp/ddd-vienna-example</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\aggregation\src\Contracts\Contracts.fsproj" />
     <ProjectReference Include="..\Common\Common.fsproj" />
   </ItemGroup>
 </Project>

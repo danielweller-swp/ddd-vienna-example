@@ -91,3 +91,19 @@ gcloud scheduler jobs create http aggregation-schedule \
   --oidc-service-account-email=$GCP_PROJECT_NUMBER-compute@developer.gserviceaccount.com \
   --oidc-token-audience="$AGGREGATION_APPLICATION_BASE_URL"
 ```
+
+### Publishing a new Contracts library version
+
+The `Aggregation.Contracts` package is consumed by other BCs as a
+NuGet package. To publish a new version of the package, make sure
+that access to the NuGet registry is setup according to
+[the docs](../README.md#package-repository). Then do
+
+```bash
+export VERSION=1.0.0
+
+cd src/Contracts
+
+dotnet pack --configuration Release
+dotnet nuget push "bin/Release/Aggregation.Contracts.${VERSION}.nupkg" --source "github"
+```

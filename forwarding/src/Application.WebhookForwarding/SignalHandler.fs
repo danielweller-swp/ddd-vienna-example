@@ -1,7 +1,7 @@
 module Application.WebhookForwarding.SignalHandler
 
 open System.Threading.Tasks
-open Aggregation.Contracts.Signals.V1
+open Aggregation.Contracts.Signals.V2
 open Application.WebhookForwarding.Options
 open Giraffe
 open Microsoft.AspNetCore.Http
