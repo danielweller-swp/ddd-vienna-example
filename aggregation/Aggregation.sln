@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{11A39974
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Application.Tests", "tests\Application.Tests\Application.Tests.fsproj", "{0716734F-BD18-408F-BDC4-3A149B76CE44}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Contract.Tests", "tests\Contract.Tests\Contract.Tests.fsproj", "{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +36,15 @@ Global
 		{0716734F-BD18-408F-BDC4-3A149B76CE44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0716734F-BD18-408F-BDC4-3A149B76CE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0716734F-BD18-408F-BDC4-3A149B76CE44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6BF88FDD-56C1-4B8E-8DCB-6B70E70CC313} = {6DF2B544-B953-4DA6-9C18-630A363A2E0C}
 		{7828EFBF-C67C-4761-8A97-0929C6EAEE39} = {6DF2B544-B953-4DA6-9C18-630A363A2E0C}
 		{0716734F-BD18-408F-BDC4-3A149B76CE44} = {11A39974-B5D3-4521-8F22-28D5DACC1FFB}
+		{564FF4B4-2CBC-4FF1-8D25-D00BFFED1B77} = {11A39974-B5D3-4521-8F22-28D5DACC1FFB}
 	EndGlobalSection
 EndGlobal
