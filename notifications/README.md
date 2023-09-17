@@ -28,13 +28,13 @@ npm start
 ```bash
 export SIGNAL_JSON="
 {
-  \"Latitude\": 1.0,
-  \"Longitude\": 2.0,
-  \"Timestamp\": \"2023-09-01T07:17:11Z\",
-  \"ValidationResult\": {
-    \"Case\": \"Invalid\",
-    \"Fields\": [\"This signal is invalid\"]
-  }
+    \"latitude\": \"86.0242116775039\",
+    \"longitude\": \"117.428656163838\",
+    \"timestamp\": \"2023-09-15T10:26:21.6871353Z\",
+    \"validationResult\": {
+        \"status\": \"invalid\",
+        \"error\": \"This signal is invalid\"
+    }
 }"
 
 curl -H "Content-Type: application/json" -d \

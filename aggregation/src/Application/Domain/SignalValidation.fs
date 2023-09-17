@@ -1,6 +1,6 @@
 module Application.Domain.SignalValidation
 
-open Aggregation.Contracts.Signals.V1
+open Aggregation.Contracts.Signals.V2
 open Application.Domain.Providers
 
 let validate (providerSignal: ProviderSignal) : Signal =
