@@ -19,8 +19,6 @@ for each BC.
 
 ### Package Repository
 
-**TODO: this belongs to "late"**
-
 Some of our BCs use a private NuGet registry hosted by GitHub.
 To setup access to the registry, please make a copy of [`nuget.config.example`](nuget.config.example)
 named `nuget.config` and replace USERNAME by your GitHub username and
