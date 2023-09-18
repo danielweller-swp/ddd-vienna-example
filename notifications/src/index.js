@@ -1,14 +1,15 @@
+const { Buffer } = require('node:buffer')
 const express = require('express')
 
-function extractSignalMessage(postBody) {
+function extractSignalMessage (postBody) {
   return JSON.parse(Buffer.from(postBody.message.data, 'base64').toString('utf8'))
 }
 
-function notifyCustomer(invalidSignal) {
+function notifyCustomer (invalidSignal) {
   console.log(`Invalid signal ${JSON.stringify(invalidSignal)} observed, notifying customer.`)
 }
 
-function invalidSignalNotificationHandler(req, res) {
+function invalidSignalNotificationHandler (req, res) {
   const signal = extractSignalMessage(req.body)
   if (signal.validationResult.status === 'valid') {
     console.log('Valid signal observed; doing nothing.')

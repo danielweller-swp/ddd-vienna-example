@@ -38,6 +38,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
       - run: npm test
 
       - name: Build Docker Container
