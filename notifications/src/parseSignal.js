@@ -1,9 +1,9 @@
-function parseSignal(signalMessage) {
+function parseSignal (signalMessage) {
   const latitude = signalMessage.Latitude
   const longitude = signalMessage.Longitude
   const timestamp = Date.parse(signalMessage.Timestamp)
 
-  if (signalMessage.ValidationResult.Case == 'Valid') {
+  if (signalMessage.ValidationResult.Case === 'Valid') {
     return {
       isValid: true,
       latitude,
