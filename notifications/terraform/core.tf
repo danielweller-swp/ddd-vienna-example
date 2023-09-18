@@ -32,7 +32,7 @@ resource "google_pubsub_subscription" "aggregation-signals-subscription" {
   push_config {
     push_endpoint = google_cloud_run_v2_service.notifications-application.uri
     oidc_token {
-      service_account_email = data.google_compute_default_service_account.default.email
+      service_account_email = "642254565385-compute@developer.gserviceaccount.com"
     }
   }
 }

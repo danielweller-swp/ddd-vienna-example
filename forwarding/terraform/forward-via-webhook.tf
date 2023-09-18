@@ -26,7 +26,7 @@ resource "google_cloud_run_v2_service" "webhook-application" {
 
 resource "google_pubsub_subscription" "webhook-subscription" {
   name  = "forwarding-webhook-signals"
-  topic = data.google_pubsub_topic.aggregation-signals.name
+  topic = "aggregation-signals"
 
   labels = {
     bounded-context = "forwarding"
@@ -36,7 +36,7 @@ resource "google_pubsub_subscription" "webhook-subscription" {
   push_config {
     push_endpoint = google_cloud_run_v2_service.webhook-application.uri
     oidc_token {
-      service_account_email = data.google_compute_default_service_account.default.email
+      service_account_email = "642254565385-compute@developer.gserviceaccount.com"
     }
   }
 }
