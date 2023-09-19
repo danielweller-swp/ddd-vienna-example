@@ -5,7 +5,7 @@ resource "google_cloud_run_v2_service" "webhook-application" {
 
   template {
     containers {
-      image = "eu.gcr.io/${local.GCP_PROJECT}/webhook-application:${var.AGGREGATION_VERSION}"
+      image = "eu.gcr.io/${local.GCP_PROJECT}/webhook-application:${var.version_ref}"
       env {
         name  = "CUSTOMER_1_WEBHOOK_KEY"
         value_source {
@@ -14,7 +14,6 @@ resource "google_cloud_run_v2_service" "webhook-application" {
             version = "latest"
           }
         }
-        value = var.CUSTOMER_1_WEBHOOK_KEY
       }
     }
 
@@ -27,6 +26,9 @@ resource "google_cloud_run_v2_service" "webhook-application" {
 
 resource "google_secret_manager_secret" "customer_1_webhook_key" {
   secret_id = "customer_1_webhook_key"
+  replication {
+    automatic = true
+  }
 }
 
 resource "google_pubsub_subscription" "webhook-subscription" {

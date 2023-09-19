@@ -3,10 +3,14 @@ variable "AGGREGATION_VERSION" {
   description = "GIT-REF"
 }
 
+module "pubsub" {
+  source = "./pubsub"
 
-data "google_compute_default_service_account" "default" {
+  version_ref = var.AGGREGATION_VERSION
 }
 
-data "google_pubsub_topic" "aggregation-signals" {
-  name = "aggregation-signals"
+module "webhook" {
+  source = "./webhook"
+
+  version_ref = var.AGGREGATION_VERSION
 }

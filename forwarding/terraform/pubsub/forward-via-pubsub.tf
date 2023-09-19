@@ -5,7 +5,7 @@ resource "google_cloud_run_v2_service" "pubsub-application" {
 
   template {
     containers {
-      image = "eu.gcr.io/${local.GCP_PROJECT}/pubsub-application:${var.AGGREGATION_VERSION}"
+      image = "eu.gcr.io/${local.GCP_PROJECT}/pubsub-application:${var.version_ref}"
     }
 
     labels = {
