@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - "./forwarding"
       - "aggregation/src/Contracts"
-
 
 jobs:
   build:
