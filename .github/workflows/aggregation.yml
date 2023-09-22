@@ -4,6 +4,8 @@ concurrency: aggregation-${{ github.ref }}
 on:
   workflow_dispatch:
   push:
+    paths:
+      - "aggregation/"
 
 jobs:
   build:
