@@ -3,7 +3,7 @@ concurrency: notifications-${{ github.ref }}
 
 on:
   workflow_dispatch:
-#  push:
+  push:
 
 jobs:
   build:
