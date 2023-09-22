@@ -7,7 +7,7 @@ resource "google_cloud_run_v2_service" "aggregation-application" {
     containers {
       image = "eu.gcr.io/${local.GCP_PROJECT}/aggregation-application:${var.AGGREGATION_VERSION}"
       env {
-        name  = "aggregation_signals"
+        name  = "AGGREGATION_SIGNALS_TOPIC"
         value = google_pubsub_topic.aggregation-signals.id
       }
     }
