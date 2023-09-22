@@ -15,7 +15,7 @@ module PubSub =
         interface IBus with
             member this.Publish (TopicIdentifier topicId) message =
                 task {
-                    let topic = TopicName(gcpProjectId, topicId)
+                    let topic = TopicName.Parse(topicId)
                     let publisher = PublisherClient.Create(topic)
                     try
                         System.Console.Out.WriteLine($"Publishing {message} to Pub/Sub")
