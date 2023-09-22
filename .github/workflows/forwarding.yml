@@ -4,6 +4,8 @@ concurrency: forwarding-${{ github.ref }}
 on:
   workflow_dispatch:
   push:
+    paths:
+      - './forwarding'
 
 jobs:
   build:

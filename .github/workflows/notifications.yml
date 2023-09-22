@@ -4,6 +4,8 @@ concurrency: notifications-${{ github.ref }}
 on:
   workflow_dispatch:
   push:
+    paths:
+      - './notifications'
 
 jobs:
   build:
