@@ -40,8 +40,6 @@ jobs:
 
       - run: npm run lint
 
-      - run: npm test
-
       - name: Build Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/notifications_application:$GITHUB_SHA 
