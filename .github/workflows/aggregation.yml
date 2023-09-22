@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - './aggregation'
+      - 'aggregation/**'
+      - '.github/workflows/aggregation.yml'
 
 jobs:
   build:

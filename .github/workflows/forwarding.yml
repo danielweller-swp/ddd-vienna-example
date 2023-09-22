@@ -5,8 +5,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "./forwarding"
-      - "aggregation/src/Contracts"
+      - 'forwarding/**'
+      - '.github/workflows/forwarding.yml'
+      - 'aggregation/src/Contracts'
 
 jobs:
   build:
