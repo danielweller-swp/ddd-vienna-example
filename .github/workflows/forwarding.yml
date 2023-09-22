@@ -36,9 +36,6 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.313"
-#          source-url: https://nuget.pkg.github.com/danielweller-swp/index.json
-#        env:
-#          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - run: dotnet nuget add source --username danielweller-swp --password ${{ secrets.NUGET_AUTH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/danielweller-swp/index.json"
 
