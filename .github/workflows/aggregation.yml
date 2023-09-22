@@ -24,13 +24,13 @@ jobs:
         with:
           workload_identity_provider: projects/642254565385/locations/global/workloadIdentityPools/github/providers/github
           service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Set up GCP SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: ">= 363.0.0"
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - uses: actions/setup-dotnet@v3
         with:
@@ -52,7 +52,7 @@ jobs:
 
       - name: Build Release version
         run: dotnet build -c Release Aggregation.sln
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Publish
         run: >-
@@ -60,14 +60,14 @@ jobs:
           --no-build
           -c Release
           -o artifacts/aggregation-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Build Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/aggregation-application:$GITHUB_SHA 
           --project ddd-vienna-sample
         working-directory: aggregation/artifacts/aggregation-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
   terraform:
     name: Terraform
