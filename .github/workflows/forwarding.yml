@@ -40,7 +40,7 @@ jobs:
 #        env:
 #          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/danielweller-swp/index.json"
+      - run: dotnet nuget add source --username danielweller-swp --password ${{ secrets.NUGET_AUTH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/danielweller-swp/index.json"
 
       - run: dotnet tool restore
 
