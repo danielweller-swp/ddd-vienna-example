@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - './forwarding'
+      - 'forwarding/**'
+      - '.github/workflows/forwarding.yml'
 
 jobs:
   build:
