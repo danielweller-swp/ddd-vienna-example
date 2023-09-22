@@ -27,13 +27,13 @@ jobs:
         with:
           workload_identity_provider: projects/642254565385/locations/global/workloadIdentityPools/github/providers/github
           service_account: deployment@ddd-vienna-sample.iam.gserviceaccount.com
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Set up GCP SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           version: ">= 363.0.0"
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - uses: actions/setup-dotnet@v3
         with:
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build Release version
         run: dotnet build -c Release Forwarding.sln
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Publish PubSub
         run: >-
@@ -63,7 +63,7 @@ jobs:
           --no-build
           -c Release
           -o artifacts/pubsub-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Publish Webhook
         run: >-
@@ -71,21 +71,21 @@ jobs:
           --no-build
           -c Release
           -o artifacts/webhook-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Build Pubsub Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/pubsub-application:$GITHUB_SHA 
           --project ddd-vienna-sample
         working-directory: forwarding/artifacts/pubsub-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
       - name: Build Webhook Docker Container
         run: >-
           gcloud builds submit --tag eu.gcr.io/ddd-vienna-sample/webhook-application:$GITHUB_SHA 
           --project ddd-vienna-sample
         working-directory: forwarding/artifacts/webhook-application
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/release'
 
   terraform:
     name: Terraform
