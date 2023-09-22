@@ -27,14 +27,17 @@ type ApplicationConfiguration = {
     Features: Features
 }
 
-let parseBool (str: string) =
-    match str.ToUpperInvariant() with
-    | "TRUE" -> true
-    | _ -> false    
+let parseBool (strOption: string option) =
+    match strOption with
+    | Some str ->
+        match str.ToUpperInvariant() with
+        | "TRUE" -> true
+        | _ -> false
+    | None -> false
 
 let buildConfiguration (services: IServiceProvider) : ApplicationConfiguration =
     let batching =
-        match Environment.GetEnvironmentVariable("USE_BATCHING") |> parseBool with
+        match Environment.GetEnvironmentVariable("USE_BATCHING") |> Option.ofObj |> parseBool with
         | true -> BatchingConfiguration.Default |> Batching
         | false -> NoBatching
     

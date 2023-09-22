@@ -15,6 +15,10 @@ resource "google_cloud_run_v2_service" "webhook-application" {
           }
         }
       }
+      env {
+        name = "USE_BATCHING"
+        value = "true"
+      }
     }
 
     labels = {
