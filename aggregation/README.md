@@ -6,15 +6,6 @@ these signals to other BCs in the signals domain.
 
 ## Local Development
 
-### Infrastructure Dependencies
-
-This bounded context has infrastructure dependencies (e.g. PostgreSQL).
-To make them available when running locally, start them via Docker using
-
-```bash
-./run-infra-deps.sh
-```
-
 ### Build
 
 ```bash
