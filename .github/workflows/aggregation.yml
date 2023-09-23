@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "aggregation/"
+      - "aggregation/**"
 
 jobs:
   build:
