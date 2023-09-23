@@ -47,8 +47,8 @@ resource "google_monitoring_slo" "signals-forwarded" {
       threshold = 0.999
       performance {
         good_total_ratio {
-          good_service_filter = "metric.type=\"logging.googleapis.com/user/monitoring-signals-forwarded-good-sli\""
-          bad_service_filter  = "metric.type=\"logging.googleapis.com/user/monitoring-signals-forwarded-bad-sli\""
+          good_service_filter = "metric.type=\"logging.googleapis.com/user/monitoring-signals-forwarded-good-sli\" resource.type=\"cloud_run_revision\""
+          bad_service_filter  = "metric.type=\"logging.googleapis.com/user/monitoring-signals-forwarded-bad-sli\" resource.type=\"cloud_run_revision\""
         }
       }
     }
