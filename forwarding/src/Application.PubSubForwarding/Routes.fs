@@ -4,9 +4,18 @@ open Giraffe
 open Microsoft.AspNetCore.Http
 open FsToolkit.ErrorHandling
 
+let sendSignalViaPubSub signal =
+    Ok ()
+
 let signalHandler =
     let handler = fun ctx signal -> taskResult {
-        System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
+        match sendSignalViaPubSub signal with
+        | Ok _ ->
+            // This log-line is used for a log-based metric!
+            System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
+        | Error e ->
+            // This log-line is used for a log-based metric!
+            System.Console.Out.WriteLine($"Error forwarding signal via Pub/Sub: {e}")
     } 
     Common.SignalSubscription.httpHandler handler
 
