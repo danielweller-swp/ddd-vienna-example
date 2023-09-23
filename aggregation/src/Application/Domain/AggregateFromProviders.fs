@@ -11,6 +11,7 @@ open Microsoft.AspNetCore.Http
 open Aggregation.Contracts.Signals.V1
 
 open Giraffe
+open FsToolkit.ErrorHandling
 
 let publishSignal (bus: IBus) topic signal =
     signal
@@ -26,22 +27,36 @@ let aggregateAndPublishSignals bus topic (providers: IProvider list) = task {
             )
         |> Task.WhenAll
         
-    let signals =
+    let providersAndSignalResults =
         signalResults
-        |> Array.collect(fun result ->
+        |> List.ofArray
+        |> List.zip providers
+
+    let signals =
+        providersAndSignalResults
+        |> List.collect(fun (provider, result) ->
             match result with
             | Ok signal ->
-                [| signal |]
+                [ provider, signal ]
             | Error e ->
                 Console.Out.WriteLine($"Error aggregating signal: {e.Message}")
-                [|  |]
+                [  ]
             )
         
     let! publishResults =               
         signals
-        |> Array.map(fun signal ->
+        |> List.map(fun (provider, providerSignal) ->
+            let validationResult =
+                providerSignal
+                |> SignalValidation.validate
+            let signal = {
+                    Latitude = providerSignal.Latitude
+                    Longitude = providerSignal.Longitude
+                    Timestamp = providerSignal.Timestamp
+                    ProviderId = provider.ProviderId |> ProviderId.value
+                    ValidationResult = validationResult
+                }
             signal
-            |> SignalValidation.validate
             |> publishSignal bus topic
             )
         |> Task.WhenAll
