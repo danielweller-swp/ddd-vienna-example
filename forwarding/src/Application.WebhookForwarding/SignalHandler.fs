@@ -8,6 +8,7 @@ open Microsoft.AspNetCore.Http
 open FsToolkit.ErrorHandling
 
 let sendSignalToWebhook webhook signal =
+    System.Console.Out.WriteLine($"Forwarding signal via Webhook: {signal}")
     Ok ()
 
 let handleSignalWithoutBatching webhook signal =
@@ -19,14 +20,15 @@ let handleSignalWithoutBatching webhook signal =
         // This log-line is used for a log-based metric!
         System.Console.Out.WriteLine($"Error forwarding signal via Webhook: {e}")
 
-let batchSignal webhook signal =
+let batchSignal batchingConfig webhook signal =
+    System.Console.Out.WriteLine($"Batching signal {signal} until {batchingConfig.BatchSize} is reached")
     Ok()
 
 let handleSignalWithBatching batchingConfig webhook signal =
-    match batchSignal webhook signal with
+    match batchSignal batchingConfig webhook signal with
     | Ok _ ->
         // This log-line is used for a log-based metric!
-        System.Console.Out.WriteLine($"Batched signal {signal} until {batchingConfig.BatchSize} is reached")
+        System.Console.Out.WriteLine($"Batched signal {signal}")
     | Error e ->
         // This log-line is used for a log-based metric!
         System.Console.Out.WriteLine($"Error batching signal: {e}")
