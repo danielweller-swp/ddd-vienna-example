@@ -12,7 +12,7 @@ let signalHandler =
         match sendSignalViaPubSub signal with
         | Ok _ ->
             // This log-line is used for a log-based metric!
-            System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
+            System.Console.Out.WriteLine($"Forwarded signal via Pub/Sub: {signal}")
         | Error e ->
             // This log-line is used for a log-based metric!
             System.Console.Out.WriteLine($"Error forwarding signal via Pub/Sub: {e}")
