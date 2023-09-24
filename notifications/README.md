@@ -39,3 +39,17 @@ curl -H "Content-Type: application/json" -d \
 }" \
 http://localhost:8080/
 ```
+
+### Linting
+
+The code can be linted with
+
+```bash
+npm run lint
+```
+
+and linting errors can be fixed with
+
+```bash
+npm run lint:fix
+```
