@@ -6,6 +6,7 @@ open FsToolkit.ErrorHandling
 
 let signalHandler =
     let handler = fun ctx signal -> taskResult {
+        // This log-line is used for a log-based metric!
         System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
     } 
     Common.SignalSubscription.httpHandler handler
