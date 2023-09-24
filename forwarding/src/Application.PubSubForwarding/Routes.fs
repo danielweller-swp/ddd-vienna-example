@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Http
 open FsToolkit.ErrorHandling
 
 let sendSignalViaPubSub signal =
+    // This log-line is used for a log-based metric!
     System.Console.Out.WriteLine($"Forwarding signal via Pub/Sub: {signal}")
     Ok ()
 
