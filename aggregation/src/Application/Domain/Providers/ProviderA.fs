@@ -4,6 +4,8 @@ open System
 open NodaTime
 open FsToolkit.ErrorHandling
 
+let providerId = Guid.Parse("05da02cd-65f6-4688-81a2-19053c9dd0b4") |> ProviderId
+
 let randomValidSignal(clock: IClock) =
     let rnd = Random()
 
@@ -18,3 +20,5 @@ type ProviderA(clock: IClock) =
         member this.GetSignal() = taskResult {
             return randomValidSignal(clock)
         }
+
+        member this.ProviderId = providerId

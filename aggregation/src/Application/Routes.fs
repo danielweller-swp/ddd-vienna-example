@@ -14,4 +14,4 @@ let routes : HttpFunc -> HttpContext -> HttpFuncResult =
             choose [
                 route "/aggregate-from-providers" >=> AggregateFromProviders.handler
             ]
-        setStatusCode 404 >=> text "Not Found" ]    
+        setStatusCode 404 >=> text "Not Found" ]

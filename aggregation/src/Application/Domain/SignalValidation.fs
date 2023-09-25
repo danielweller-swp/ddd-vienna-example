@@ -3,8 +3,7 @@ module Application.Domain.SignalValidation
 open Aggregation.Contracts.Signals.V1
 open Application.Domain.Providers
 
-let validate (providerSignal: ProviderSignal) : Signal =
-    let validationResult =
+let validate (providerSignal: ProviderSignal) : ValidationResult =
         match providerSignal.Latitude, providerSignal.Longitude with
         | lat, _ when lat < -90m || 90m < lat ->
             "Latitude outside of [-90, 90]"
@@ -13,9 +12,3 @@ let validate (providerSignal: ProviderSignal) : Signal =
             "Longitude outside of [-180, 180]"
             |> Invalid
         | _, _ -> Valid
-    {
-        Latitude = providerSignal.Latitude
-        Longitude = providerSignal.Longitude
-        Timestamp = providerSignal.Timestamp
-        ValidationResult = validationResult 
-    }

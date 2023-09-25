@@ -3,6 +3,7 @@
 module Signals =
     module V1 =
 
+        open System
         open System.Text.Json
         open System.Text.Json.Serialization
         open NodaTime
@@ -17,6 +18,7 @@ module Signals =
             Longitude: decimal
             Timestamp: Instant
             ValidationResult: ValidationResult
+            ProviderId: Guid
         }
         
         let setupJsonOptions() =
