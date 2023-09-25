@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - "aggregation/**"
+      - ".github/workflows/aggregation.yml"
 
 jobs:
   build:

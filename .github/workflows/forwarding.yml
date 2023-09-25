@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - "forwarding/**"
+      - ".github/workflows/forwarding.yml"
       - "aggregation/src/Contracts/**"
 
 jobs:
