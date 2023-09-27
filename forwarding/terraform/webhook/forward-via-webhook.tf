@@ -42,6 +42,12 @@ resource "google_secret_manager_secret_iam_member" "customer_1_webhook_key" {
   member = "serviceAccount:642254565385-compute@developer.gserviceaccount.com"
 }
 
+resource "google_secret_manager_secret_version" "customer_1_webhook_key_initial" {
+  secret = google_secret_manager_secret.customer_1_webhook_key.id
+
+  secret_data = "initial-webhook-secret-value"
+}
+
 resource "google_pubsub_subscription" "webhook-subscription" {
   name  = "forwarding-webhook-signals"
   topic = data.google_pubsub_topic.aggregation-signals.name
