@@ -30,8 +30,8 @@ in general, and DDD in particular, the repository contains
 These versions are modelled as branches in this git repository.
 
 The intention is to show how how our domain code evolved over time. Each
-version is usable (dev experience, deployment, ...) in a standalone way
-- just check out one of the branches and explore it!
+version is usable (dev experience, deployment, ...) in a standalone way - just 
+check out one of the branches and explore it!
 
 To see the changes from one version to another, you can try
 [diff2html](https://diff2html.xyz/), e.g. `diff2html -- early mid` to
