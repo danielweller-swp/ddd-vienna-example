@@ -6,6 +6,10 @@ by [Christian Folie](https://github.com/Nagelfar) and
 the [DDD Vienna meetup](https://www.meetup.com/ddd-vienna/) on
 September 28, 2023.
 
+You can find the slides for our talk on
+[Miro](https://miro.com/app/board/uXjVMgvPqWc=/?share_link_id=287616785235)
+and [in this repository](./DDDevOps%20-%20Implementing%20and%20operating%20a%20domain.pdf).
+
 ## How to use this repository
 
 The repository contains the code of a sample application
